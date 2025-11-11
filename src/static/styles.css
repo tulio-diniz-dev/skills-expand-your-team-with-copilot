@@ -32,6 +32,40 @@
   --info-light: #d1ecf1;
 }
 
+/* Dark mode color palette */
+body.dark-mode {
+  /* Primary colors - adjusted for dark mode */
+  --primary: #7986cb;
+  --primary-light: #aab6fe;
+  --primary-dark: #49599a;
+  --primary-text: #ffffff;
+
+  /* Secondary colors */
+  --secondary: #ff9800;
+  --secondary-light: #ffc947;
+  --secondary-dark: #c66900;
+  --secondary-text: #000000;
+
+  /* Neutral colors - inverted for dark mode */
+  --background: #121212;
+  --surface: #1e1e1e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #b0b0b0;
+  --border: #333333;
+  --border-light: #2a2a2a;
+  --border-focus: #444444;
+
+  /* Feedback colors - adjusted for dark mode */
+  --success: #66bb6a;
+  --success-light: #2d3a2e;
+  --warning: #ffa726;
+  --warning-light: #3a3020;
+  --error: #ef5350;
+  --error-light: #3a2020;
+  --info: #29b6f6;
+  --info-light: #1e2a30;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -725,4 +759,30 @@ footer {
 
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Dark mode toggle button */
+#theme-toggle {
+  position: absolute;
+  top: 10px;
+  right: 150px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+#theme-toggle:active {
+  transform: scale(0.95);
 }
