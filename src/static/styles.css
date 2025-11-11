@@ -345,6 +345,68 @@ button {
   white-space: nowrap;
 }
 
+/* Social sharing buttons */
+.social-share-container {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-light);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.social-share-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.share-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.share-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-button.facebook {
+  background-color: #1877f2;
+}
+
+.share-button.twitter {
+  background-color: #1da1f2;
+}
+
+.share-button.whatsapp {
+  background-color: #25d366;
+}
+
+.share-button.email {
+  background-color: #ea4335;
+}
+
+.share-button.copy-link {
+  background-color: #6c757d;
+}
+
+.share-button.copy-link.copied {
+  background-color: var(--success);
+}
+
 /* Activity skeletons for loading state */
 .skeleton-card {
   padding: 12px;
