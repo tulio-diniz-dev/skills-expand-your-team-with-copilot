@@ -472,6 +472,69 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Function to create share URL for an activity
+  function createShareUrl(activityName) {
+    // Create a URL with the activity name as a query parameter
+    const baseUrl = window.location.origin + window.location.pathname;
+    return `${baseUrl}?activity=${encodeURIComponent(activityName)}`;
+  }
+
+  // Function to create share text for an activity
+  function createShareText(activityName, description, schedule) {
+    return `Check out "${activityName}" at Mergington High School! ${description} Schedule: ${schedule}`;
+  }
+
+  // Function to handle social sharing
+  function handleShare(platform, activityName, description, schedule) {
+    const shareUrl = createShareUrl(activityName);
+    const shareText = createShareText(activityName, description, schedule);
+    
+    let url;
+    
+    switch (platform) {
+      case 'facebook':
+        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+        window.open(url, '_blank', 'width=600,height=400');
+        break;
+      
+      case 'twitter':
+        url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+        window.open(url, '_blank', 'width=600,height=400');
+        break;
+      
+      case 'whatsapp':
+        url = `https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`;
+        window.open(url, '_blank');
+        break;
+      
+      case 'email':
+        url = `mailto:?subject=${encodeURIComponent('Check out this activity at Mergington High School')}&body=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`;
+        window.location.href = url;
+        break;
+      
+      case 'copy':
+        // Copy link to clipboard
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          // Find the copy button and update its appearance
+          const copyButtons = document.querySelectorAll('.share-button.copy-link');
+          copyButtons.forEach(btn => {
+            if (btn.dataset.activity === activityName) {
+              btn.classList.add('copied');
+              btn.innerHTML = '✓';
+              setTimeout(() => {
+                btn.classList.remove('copied');
+                btn.innerHTML = '🔗';
+              }, 2000);
+            }
+          });
+        }).catch(err => {
+          console.error('Failed to copy link:', err);
+          showMessage('Failed to copy link to clipboard', 'error');
+        });
+        break;
+    }
+  }
+
   // Function to render a single activity card
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
@@ -519,6 +582,28 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
+    // Create social sharing buttons
+    const socialShareHtml = `
+      <div class="social-share-container">
+        <span class="social-share-label">Share:</span>
+        <button class="share-button facebook" data-activity="${name}" data-platform="facebook" title="Share on Facebook">
+          f
+        </button>
+        <button class="share-button twitter" data-activity="${name}" data-platform="twitter" title="Share on Twitter">
+          𝕏
+        </button>
+        <button class="share-button whatsapp" data-activity="${name}" data-platform="whatsapp" title="Share on WhatsApp">
+          ⚬
+        </button>
+        <button class="share-button email" data-activity="${name}" data-platform="email" title="Share via Email">
+          ✉
+        </button>
+        <button class="share-button copy-link" data-activity="${name}" data-platform="copy" title="Copy Link">
+          🔗
+        </button>
+      </div>
+    `;
+
     activityCard.innerHTML = `
       ${tagHtml}
       <h4>${name}</h4>
@@ -528,6 +613,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <span class="tooltip-text">Regular meetings at this time throughout the semester</span>
       </p>
       ${capacityIndicator}
+      ${socialShareHtml}
       <div class="participants-list">
         <h5>Current Participants:</h5>
         <ul>
@@ -586,6 +672,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // Add click handlers for social share buttons
+    const shareButtons = activityCard.querySelectorAll(".share-button");
+    shareButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const platform = button.dataset.platform;
+        handleShare(platform, name, details.description, formattedSchedule);
+      });
+    });
 
     activitiesList.appendChild(activityCard);
   }
